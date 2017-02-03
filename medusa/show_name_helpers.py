@@ -99,7 +99,7 @@ def allPossibleShowNames(show, season=-1):
     Figures out every possible variation of the name for a particular show. Includes TVDB name, TVRage name,
     country codes on the end, eg. "Show Name (AU)", and any scene exception names.
 
-    show: a TVShow object that we should get the names of
+    show: a Series object that we should get the names of
 
     Returns: a list of all the possible show names
     """
