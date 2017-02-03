@@ -27,45 +27,103 @@ import threading
 import time
 import traceback
 import warnings
-
-from collections import OrderedDict, namedtuple
+from collections import (
+    OrderedDict,
+    namedtuple,
+)
 from itertools import groupby
 
 from imdb import imdb
-from imdb._exceptions import IMDbDataAccessError, IMDbParserError
-
+from imdb._exceptions import (
+    IMDbDataAccessError,
+    IMDbParserError,
+)
 import knowit
-
 import shutil_custom
-
 from six import text_type
 
-from . import app, db, helpers, image_cache, logger, network_timezones, notifiers, post_processor, subtitles
-from .black_and_white_list import BlackAndWhiteList
-from .common import (
-    ARCHIVED, DOWNLOADED, IGNORED, NAMING_DUPLICATE, NAMING_EXTEND, NAMING_LIMITED_EXTEND,
-    NAMING_LIMITED_EXTEND_E_PREFIXED, NAMING_SEPARATED_REPEAT, Overview, Quality, SKIPPED,
-    SNATCHED, SNATCHED_PROPER, UNAIRED, UNKNOWN, WANTED, qualityPresets, statusStrings
+from medusa import (
+    app,
+    db,
+    helpers,
+    image_cache,
+    logger,
+    network_timezones,
+    notifiers,
+    post_processor,
+    subtitles,
 )
-from .helper.common import (
-    dateFormat, dateTimeFormat, episode_num, pretty_file_size, remove_extension, replace_extension, sanitize_filename,
-    try_int
+from medusa.black_and_white_list import BlackAndWhiteList
+from medusa.common import (
+    ARCHIVED,
+    DOWNLOADED,
+    IGNORED,
+    NAMING_DUPLICATE,
+    NAMING_EXTEND,
+    NAMING_LIMITED_EXTEND,
+    NAMING_LIMITED_EXTEND_E_PREFIXED,
+    NAMING_SEPARATED_REPEAT,
+    Overview,
+    Quality,
+    SKIPPED,
+    SNATCHED,
+    SNATCHED_PROPER,
+    UNAIRED,
+    UNKNOWN,
+    WANTED,
+    qualityPresets,
+    statusStrings,
 )
-from .helper.exceptions import (
-    EpisodeDeletedException, EpisodeNotFoundException, MultipleEpisodesInDatabaseException,
-    MultipleShowObjectsException, MultipleShowsInDatabaseException, NoNFOException, ShowDirectoryNotFoundException,
-    ShowNotFoundException, ex
+from medusa.helper.common import (
+    dateFormat,
+    dateTimeFormat,
+    episode_num,
+    pretty_file_size,
+    remove_extension,
+    replace_extension,
+    sanitize_filename,
+    try_int,
 )
-from .helper.externals import get_externals
-from .indexers.indexer_api import indexerApi
-from .indexers.indexer_config import INDEXER_TVDBV2, INDEXER_TVRAGE, indexerConfig, mappings, reverse_mappings
-from .indexers.indexer_exceptions import (IndexerAttributeNotFound, IndexerEpisodeNotFound, IndexerError,
-                                          IndexerException, IndexerSeasonNotFound)
-from .name_parser.parser import InvalidNameException, InvalidShowException, NameParser
-from .sbdatetime import sbdatetime
-from .scene_exceptions import get_scene_exceptions
-from .scene_numbering import get_scene_absolute_numbering, get_scene_numbering, xem_refresh
-from .show.show import Show
+from medusa.helper.exceptions import (
+    EpisodeDeletedException,
+    EpisodeNotFoundException,
+    MultipleEpisodesInDatabaseException,
+    MultipleShowObjectsException,
+    MultipleShowsInDatabaseException,
+    NoNFOException,
+    ShowDirectoryNotFoundException,
+    ShowNotFoundException,
+    ex,
+)
+from medusa.helper.externals import get_externals
+from medusa.indexers.indexer_api import indexerApi
+from medusa.indexers.indexer_config import (
+    INDEXER_TVDBV2,
+    INDEXER_TVRAGE,
+    indexerConfig,
+    mappings,
+    reverse_mappings,
+)
+from medusa.indexers.indexer_exceptions import (
+    IndexerAttributeNotFound,
+    IndexerEpisodeNotFound,
+    IndexerError,
+    IndexerException,
+    IndexerSeasonNotFound,
+)
+from medusa.name_parser.parser import (
+    InvalidNameException,
+    InvalidShowException,
+    NameParser,
+)
+from medusa.sbdatetime import sbdatetime
+from medusa.scene_exceptions import get_scene_exceptions
+from medusa.scene_numbering import (
+    get_scene_absolute_numbering,
+    get_scene_numbering,
+    xem_refresh,
+)
+from medusa.show.show import Show
 
 try:
     import xml.etree.cElementTree as ETree
